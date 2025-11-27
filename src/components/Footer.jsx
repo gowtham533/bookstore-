@@ -13,14 +13,14 @@ function Footer() {
           Nam consequatur recusandae maiores necessitatibus! Natus, velit nemo! Sequi molestiae voluptatem numquam atque nemo dolorum cumque obcaecati quidem voluptas facere corrupti eos, consequatur reprehenderit minus ea esse. Amet, doloribus quae!</p>
         </div>
         {/* news letter */}
-        <div className='mt-3 mx-6'>
+        <div className='md:mt-3 mx-6'>
           <h1 className='text-3xl font-bold my-3'>NEWS LETTER</h1>
           <p>Stay updated with our latest trends</p>
           <input type="text" className='w-100 bg-white p-2' placeholder='Email ID'/>
           <button className='bg-yellow-500 p-3'><FaArrowRight/></button>
         </div>
         {/* follow us */}
-        <div className='mt-3'>
+        <div className='md:mt-3'>
           <h1 className='text-3xl font-bold my-3'>FOLLOW US</h1>
           <p>Let us be social</p>
           <div className='flex items-center'>
