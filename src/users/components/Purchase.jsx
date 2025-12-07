@@ -13,8 +13,8 @@ function Purchase() {
                     <h2 className="text-lg text-red-500">$ 400</h2>
                     <p className='text-justify'>Abstract</p>
                     <div className="flex mt-5">
-                        <img src="/public/purchase.png" alt="" />
-                    </div>
+                    <img src="/public/purchase.png" alt="" />
+                </div>
                 </div>
                 <div className="px-4 mt-4 md:mt-0">
                     <img className='w-100' src="/public/shopping.webp"  alt="" />

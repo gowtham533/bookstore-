@@ -8,7 +8,7 @@ function AdminHeader() {
         {/* login with title */}
         <div className="flex ietms-center">
         <img width={'70px'} height={'70px'} src="/public/book logo-photoroom.png" alt="logo" />
-        <h1 className="text-2xl font-bold md:hidden">Book Store</h1>
+        <h1 className="text-2xl text-black font-bold md:hidden">Book Store</h1>
       </div>
         {/* logout */}
         <button className='bg-black px-3 py-2 rounded text-white flex items-center hover:bg-white hover:text-black'><FaPowerOff className='me-2'/>Logout</button>

@@ -24,6 +24,7 @@ function Contact() {
           <div className='flex justify-center items-center'><Link to={''} className='rounded items-center justify-center flex bg-gray-400 m-3' style={{width:"50px",height:"50px",borderRadius:"50%"}}><FaPhone className='text-2xl'/></Link>
           <p>+91 9544236364</p>
           </div>
+          
 
            <div className='flex justify-center items-center'><Link to={''} className='rounded items-center justify-center flex bg-gray-400 m-3' style={{width:"50px",height:"50px",borderRadius:"50%"}}><IoIosMailOpen className='text-2xl'/></Link>
            <p>bookstore534@gmail.com</p>
