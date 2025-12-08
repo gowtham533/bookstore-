@@ -1,10 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+
 
 function Home() {
+
+  const navigate = useNavigate()
+const [searchKey,setSearchKey] = useState("")
+
+const handleSearch = ()=>{
+  if(!searchKey){
+    toast.warning("please provide a book title here")
+  }else if(!sessionStorage.getItem("token")){
+    toast.warning("please login to search books")
+    setTimeout(() => {
+      navigate('/login')
+    }, 2500);
+  }else if(sessionStorage.getItem("token") && searchKey){
+    navigate('/books')
+  }else{
+    toast.error("something went wrong")
+  }
+}
+
   return (
     <>
       <Header/>
@@ -16,8 +37,8 @@ function Home() {
       <p>Gifts Your Family and Friends a Book</p>
       {/* search */}
       <div className="mt-9 flex items-center">
-        <input type="text" className='bg-white rounded-3xl text-black w-100 placeholder-gray-500 p-2' placeholder='search books here' />
-        <button className='text-gray-500' style={{marginLeft:"-40px"}}><FaSearch/></button>
+        <input onChange={e=>setSearchKey(e.target.value)} type="text" className='bg-white rounded-3xl text-black w-100 placeholder-gray-500 p-2' placeholder='search books here' />
+        <button onClick={handleSearch} className='text-gray-500' style={{marginLeft:"-40px"}}><FaSearch/></button>
       </div>
       </div>
       </div>
@@ -93,6 +114,10 @@ function Home() {
         <p className='text-justify italic'> <span className='font-bold me-2'>A passionate storyteller known for crafting</span>, easy-to-read narratives that blend creativity with clarity. With a strong interest in human emotions, everyday experiences, and imaginative worlds, the author focuses on writing that is both relatable and inspiring. Their work often reflects a balance between thoughtful insight and simple, captivating language—perfect for readers of all ages.</p>
         </div>
       </section>
+      <ToastContainer
+      position="bottom-center"
+      autoClose={2000}
+      theme='coloured'/>
       </div>
       <Footer/>
     </>

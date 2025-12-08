@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaBars } from 'react-icons/fa'
@@ -7,11 +7,22 @@ import { Link } from 'react-router-dom'
 function Books() {
 
   const [categoryList,setCategoryList] = useState(false)
+  const [token,setToken] = useState("")
+
+  useEffect(()=>{
+    if(sessionStorage.getItem("token")){
+      const userToken = sessionStorage.getItem("token")
+      setToken(userToken)
+    }
+  },[])
 
   return (
     <>
     <Header/>
-    <>
+      
+      {
+        token ?
+        <>
     {/* Login book */}
     <div className="flex justify-center items-center flex-col">
       {/* heading */}
@@ -21,8 +32,6 @@ function Books() {
         <input type="text" placeholder='Search by Title' className="border border-gray-400 w-90 p-2" />
         <button className="bg-black text-white p-2">Search</button>
       </div>
-      
-
     </div>
     {/* book and filter row */}
       <div className="md:grid grid-cols-4 md:px-20 p-5 mb-10">
@@ -89,8 +98,20 @@ function Books() {
           </div>
         </div>
       </div>
-    </>
+      </>
+      
+      :
+  
+  <div>
     {/* not login book */}
+    <div className="w-full h-screen flex justify-center items-center flex-col">
+      <img src="/public/lock.webp" alt="lock" width={'270px'}/>
+      <p className='text-xl font-bold my-15'>please <Link to={'/login'} className='underline text-blue-500'>login</Link> to explore more!!!</p>
+    </div>
+  </div>  
+  }
+  
+    
     <Footer/>
     </>
   )
