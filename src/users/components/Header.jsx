@@ -51,7 +51,7 @@ function Header() {
         :
         <div className="relative inline-block text-left">
           <button onClick={()=>setDropDown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hove:bg-gray-50">
-            <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src="/public/images.jpeg" alt="" />
+            <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp:"/public/images.jpeg"} alt="" />
           </button>
           {
             dropDown &&
@@ -79,7 +79,7 @@ function Header() {
         :
         <div className="relative inline-block text-left">
           <button onClick={()=>setDropDown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hove:bg-gray-50">
-            <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src="/public/images.jpeg" alt="" />
+          <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp:"/public/images.jpeg"} alt="" />
           </button>
           {
             dropDown &&

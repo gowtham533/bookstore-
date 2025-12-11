@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FaEye, FaEyeSlash, FaUser } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
-import { loginAPI, registerAPI } from "../services/allAPIs"
+import { googleLoginAPI, loginAPI, registerAPI } from "../services/allAPIs"
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode'
 
@@ -90,6 +90,23 @@ function Auth({insideRegister}) {
     console.log(credentialResponse);
     const decode = jwtDecode(credentialResponse.credential)
     console.log(decode);
+    // email, name ,picture
+    const result = await googleLoginAPI({username:decode.name,email:decode.email,password:'googlePassword',picture:decode.picture})
+    if(result.status==200){
+          toast.success("login successfull..!!!")
+          sessionStorage.setItem("token",result.data.token)
+          sessionStorage.setItem("user",JSON.stringify(result.data.user))
+          setTimeout(()=>{
+            if(result.data.user.role=='admin'){
+              navigate('/admin/home')
+            }else{
+              navigate('/')
+            }
+          },2500)
+        }else{
+          toast.error("something went wrong..!!!")
+          userDetails({})
+        }
     
     
   }
