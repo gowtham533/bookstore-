@@ -8,7 +8,7 @@ import { toast, ToastContainer } from 'react-toastify'
 
 function Home() {
 
-  const navigate = useNavigate()
+const navigate = useNavigate()
 const [searchKey,setSearchKey] = useState("")
 
 const handleSearch = ()=>{

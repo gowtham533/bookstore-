@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import { addBookAPI } from '../../services/allAPIs';
+
+
 
 function Sellbook() {
 
@@ -28,8 +32,55 @@ const  handleBookImage = (e)=>{
     setPreviewList(bookImagesArray)
 }
 
+
+const handleUploadBook = async ()=>{
+    const {title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,uploadImages} = bookDetails
+    if(!title || !author || !pages || !price || !discountPrice || !imageURL || !abstract || !language || !publisher || !isbn || !category || uploadImages.length==0){
+        toast.info("please fill the form")
+    }else{
+        // api call
+        const token = sessionStorage.getItem("token")
+        if(token){
+            const reqHeader = {
+                "Authorization" : `Bearer ${token}` 
+            }
+            const reqBody = new FormData()
+            for(let key in bookDetails){
+                if(key != "uploadImages"){
+                    reqBody.append(key,bookDetails[key])
+                }else{
+                    bookDetails.uploadImages.forEach(imgFile=>{
+                        reqBody.append("uploadImages",imgFile)
+                    })
+                }
+            }
+            const result =await addBookAPI(reqBody,reqHeader)
+            
+            console.log(result);
+            if(result.status==200){
+                toast.success("book added successfully")
+            }else if(result.status==401){
+                toast.warning(result.response.data)
+            }else{
+                toast.error("something went wrong!!")
+            }
+            resetUploadBookForm()
+            
+        }
+    } 
+}
+
+const resetUploadBookForm = ()=>{
+    setBookDetails({
+        title:"",author:"",pages:"",price:"",discountPrice:"",imageURL:"",abstract:"",language:"",publisher:"",isbn:"",category:"",uploadImages:[]
+    })
+    setPreview("")
+    setPreviewList("")
+}
+
+
   return (
-    <div>
+    <>
         <div className="p-10 my-20 mx-5 bg-gray-200 ">
         <h1 className="text-center text-3xl font-bold">Book Details</h1>
         <div className="md:grid grid-cols-2 mt-10 w-full">
@@ -45,7 +96,7 @@ const  handleBookImage = (e)=>{
                     <input value={bookDetails.pages} onChange={e=>setBookDetails({...bookDetails,pages:e.target.value})} type="text" placeholder='no.of pages' className='p-2 bg-white w-full rounded'/>
                 </div>
                 <div className="mb-3">
-                    <input value={bookDetails.price} onChange={e=>setBookDetails({...bookDetails,originalPrice:e.target.value})} type="text" placeholder='Original price' className='p-2 bg-white w-full rounded'/>
+                    <input value={bookDetails.price} onChange={e=>setBookDetails({...bookDetails,price:e.target.value})} type="text" placeholder='Original price' className='p-2 bg-white w-full rounded'/>
                 </div>
                 <div className="mb-3">
                     <input value={bookDetails.discountPrice} onChange={e=>setBookDetails({...bookDetails,discountPrice:e.target.value})} type="text" placeholder='Discount price' className='p-2 bg-white w-full rounded'/>
@@ -99,11 +150,17 @@ const  handleBookImage = (e)=>{
             </div>
         </div>
         <div className="flex justify-end">
-                <button className="bg-gray-400 text-white p-2 rounded me-5 hover:bg-white hover:text-gray-400">RESET</button>
-                <button className="bg-blue-400 text-white p-2 rounded me-5 hover:bg-white hover:text-blue-400">ADD BOOK</button>
+                <button onClick={resetUploadBookForm} className="bg-gray-400 text-white p-2 rounded me-5 hover:bg-white hover:text-gray-400">RESET</button>
+                <button onClick={handleUploadBook} className="bg-blue-400 text-white p-2 rounded me-5 hover:bg-white hover:text-blue-400">ADD BOOK</button>
             </div>
         </div>
-    </div>
+        {/* toast */}
+        <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        theme='coloured'/>
+    </>
+    
   )
 }
 

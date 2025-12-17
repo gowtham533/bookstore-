@@ -41,6 +41,7 @@ function Header() {
     
     <div className="md:flex justify-end items-center hidden">
        {/* insta fb X */}
+       
       <FaInstagram/>
       <FaFacebook className='mx-2'/>
       <FaXTwitter/>
