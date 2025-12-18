@@ -1,20 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaBars } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { getAllBooksPageAPI } from '../../services/allAPIs'
+import { searchContext } from '../../contextAPI/ShareContext'
 
 function Books() {
 
+  const {searchKey,setSearchKey} = useContext(searchContext)
   const [categoryList,setCategoryList] = useState(false)
   const [token,setToken] = useState("")
+  const [allBooks,setAllBooks] = useState([])
+
+  console.log(allBooks);
 
   useEffect(()=>{
     if(sessionStorage.getItem("token")){
       const userToken = sessionStorage.getItem("token")
       setToken(userToken)
+      getAllBooks(userToken)
     }
-  },[])
+  },[searchKey])
+
+  const getAllBooks = async (token)=>{
+    const reqHeader = {
+     "Authorization":`Bearer ${token}`
+    }
+    const result = await getAllBooksPageAPI(reqHeader,searchKey)
+    if(result.status==200){
+      setAllBooks(result.data)
+    }else{
+      console.log(result);
+    }
+  }
 
   return (
     <>
@@ -29,7 +48,7 @@ function Books() {
       <h1 className="text-3xl font-bold my-8">COLLECTIONS</h1>
       {/* search box */}
       <div className="flex my-5">
-        <input type="text" placeholder='Search by Title' className="border border-gray-400 w-90 p-2" />
+        <input value={searchKey} onChange={e=>setSearchKey(e.target.value)} type="text" placeholder='Search by Title' className="border border-gray-400 w-90 p-2" />
         <button className="bg-black text-white p-2">Search</button>
       </div>
     </div>
@@ -60,41 +79,21 @@ function Books() {
         <div className="col-span-3">
           <div className="md:grid grid-cols-4 mt-5 md:mt-0">
             {/* single book card 1*/}
-            <div className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
+            {
+              allBooks?.length>0 ?
+                allBooks?.map(book=>(
+                  <div key={book?._id} className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
+            <img height={'300px'} width={'300px'} src={book?.imageURL} alt="" />
             <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <Link to={`/books/id/view`} className='bg-black py-2 px-2 mt-3 text-white rounded w-30 text-center'>View</Link>
+              <h3 className="text-blue-600 font-bold text-lg">{book?.author}</h3>
+              <h4 className="text-lg">{book.title.slice(0,9)}....</h4>
+              <Link to={`/books/${book?._id}/view`} className='bg-black py-2 px-2 mt-3 text-white rounded w-30 text-center'>View</Link>
             </div>
           </div>
-          {/* single book card 2*/}
-            <div className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <Link to={`/books/id/view`} className='bg-black py-2 px-2 mt-3 text-white rounded w-30 text-center'>View</Link>
-            </div>
-          </div>
-          {/* single book card 3*/}
-            <div className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <Link to={`/books/id/view`} className='bg-black py-2 px-2 mt-3 text-white rounded w-30 text-center'>View</Link>
-            </div>
-          </div>
-          {/* single book card 4*/}
-            <div className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <Link to={`/books/id/view`} className='bg-black py-2 px-2 mt-3 text-white rounded w-30 text-center'>View</Link>
-            </div>
-          </div>
+                ))
+                :
+                <p className='font-bold text-center'>Book not Found!!!.....</p>
+            }
           </div>
         </div>
       </div>

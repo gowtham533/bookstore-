@@ -1,15 +1,36 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaSearch } from 'react-icons/fa'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
+import { getHomePageBooksAPI } from '../../services/allAPIs'
+import { searchContext } from '../../contextAPI/ShareContext'
+
 
 
 function Home() {
 
 const navigate = useNavigate()
-const [searchKey,setSearchKey] = useState("")
+// const [searchKey,setSearchKey] = useState("")
+const {searchKey,setSearchKey} = useContext(searchContext)
+const [homeBooks,setHomeBooks] = useState([])
+
+console.log(homeBooks);
+
+useEffect(()=>{
+  getHomeBooks()
+},[])
+
+const getHomeBooks = async ()=>{
+  const result = await getHomePageBooksAPI()
+  // console.log(result);
+  if(result.status==200){
+    setHomeBooks(result.data)
+  }else{
+    console.log(result);
+  }
+}
 
 const handleSearch = ()=>{
   if(!searchKey){
@@ -49,41 +70,21 @@ const handleSearch = ()=>{
         {/* books row and col */}
         <div className="md grid grid-cols-4 w-full mt-10">
           {/* duplicated book card */}
-          <div className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <h4>$ price</h4>
-            </div>
-          </div>
-          {/* duplicated book card */}
-          <div className="shadow rounded mx-3 p-4">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <h4>$ price</h4>
-            </div>
-          </div>
-          {/* duplicated book card */}
-          <div className="shadow rounded mx-3 p-4">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <h4>$ price</h4>
-            </div>
-          </div>
-          {/* duplicated book card */}
-          <div className="shadow rounded mx-3 p-4">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <h4>$ price</h4>
-            </div>
-          </div>
+          {
+            homeBooks?.length>0?
+              homeBooks?.map(book=>(
+              <div key={book?._id} className="shadow rounded mx-3 p-4 mb-5 md:mb-0">
+                <img height={'300px'} width={'300px'} src={book?.imageURL} alt="" />
+                <div className="flex justify-center items-center mt-4 flex-col">
+                  <h3 className="text-blue-600 font-bold text-lg">{book?.author}</h3>
+                  <h4 className="text-lg">{book?.title}</h4>
+                  <h4>rs {book?.discountPrice}</h4>
+                </div>
+              </div>
+              ))
+            :
+            <p className='font-bold'>Loading.....</p>
+          }
         </div>
         {/* all books link */}
         <div className="text-center my-5">
