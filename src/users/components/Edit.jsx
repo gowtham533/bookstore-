@@ -28,7 +28,7 @@ const [offCanvas,setOffCanvas] = useState(false)
                   {/* image */}
                   <label htmlFor="uploadimg">
                   <input type="file" id='uploadimg' hidden />
-                  <img width={'200px'} style={{borderRadius:"50%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReGNqJq-DTdqDhAVxKgTe6i2YVK8w3GLvR1Q&s" alt="" />
+                  <img width={'100px'} style={{borderRadius:"50%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReGNqJq-DTdqDhAVxKgTe6i2YVK8w3GLvR1Q&s" alt="" />
                   </label>
                   <button style={{marginTop:'-20px',borderRadius:'50%'}}  className='bg-yellow-300 p-3 text-white rounded ms-20'><FaPen/></button>
                   {/* name */}
