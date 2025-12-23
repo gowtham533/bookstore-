@@ -7,6 +7,7 @@ import Edit from '../components/Edit'
 import Bookstatus from '../components/Bookstatus'
 import Sellbook from '../components/Sellbook'
 import Purchase from '../components/Purchase'
+import serverURL from '../../services/serverURL'
 
 function Profile() {
 
@@ -32,7 +33,7 @@ useEffect(()=>{
       <div style={{height:'200px'}} className="bg-black"></div>
       {/* profile img */}
       <div style={{width:'230px',height:'230px',borderRadius:'50%',marginLeft:'70px',marginTop:'-130px'}} className="bg-white p-3">
-        <img width={'200px'} style={{borderRadius:"50%"}} src={dp?dp:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReGNqJq-DTdqDhAVxKgTe6i2YVK8w3GLvR1Q&s"} alt="" />
+        <img width={'200px'} style={{borderRadius:"50%"}} src={dp?dp.startsWith("https://lh3.googleusercontent.com/")?dp:`${serverURL}/uploads/${dp}`:"/public/user.png"} alt="" />
       </div>
       {/* name with edit */}
       <div className="md:flex justify-between items-center m-5">

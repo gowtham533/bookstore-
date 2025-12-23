@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FaAddressCard, FaBars, FaFacebook, FaInstagram, FaPowerOff, FaUser } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
+import serverURL from '../../services/serverURL'
 
 
 function Header() {
@@ -17,7 +18,7 @@ function Header() {
       const userToken = sessionStorage.getItem("token")
       setToken(userToken)
       const user = JSON.parse(sessionStorage.getItem("user"))
-      setDp(user.picture)
+      setDp(user?.picture)
     }
   },[token])
 
@@ -63,7 +64,7 @@ function Header() {
         :
         <div className="relative inline-block text-left">
           <button onClick={()=>setDropDown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hove:bg-gray-50">
-            <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp:"/public/images.jpeg"} alt="" />
+            <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp.startsWith("https://lh3.googleusercontent.com/")?dp:`${serverURL}/uploads/${dp}`:"/public/user.png"} alt="" />
           </button>
           {
             dropDown &&
@@ -91,7 +92,7 @@ function Header() {
         :
         <div className="relative inline-block text-left">
           <button onClick={()=>setDropDown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hove:bg-gray-50">
-          <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp:"/public/images.jpeg"} alt="" />
+          <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} src={dp?dp.startsWith("https://lh3.googleusercontent.com/")?dp:`${serverURL}/uploads/${dp}`:"/public/user.png"} alt="" />
           </button>
           {
             dropDown &&
