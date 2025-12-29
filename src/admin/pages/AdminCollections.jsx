@@ -1,11 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
 import Footer from '../../components/Footer'
+import { getAllAdminBooksAPI } from '../../services/allAPIs'
 
 function AdminCollections() {
 
 const [tab,setTab] = useState(1)
+const [allBooks,setAllBooks] = useState([])
+
+console.log(allBooks);
+
+useEffect(()=>{
+  const token = sessionStorage.getItem("token")
+  if(token){
+    if(tab == 1){
+      getAllBooks(token)
+    }
+  }
+},[tab])
+
+const getAllBooks = async (token)=>{
+  const reqHeader = {
+    "Authorization" : `Bearer ${token}`
+  }
+  const result = await getAllAdminBooksAPI(reqHeader)
+  if(result.status == 200){
+    setAllBooks(result.data)
+  }else{
+    console.log(result);
+    
+  }
+}
 
   return (
     <>
@@ -27,15 +53,22 @@ const [tab,setTab] = useState(1)
           tab==1 &&
           <div className='md:grid grid-cols-4 w-full my-5'>
             {/* duplicate book card */}
-            <div className="shadow rounded mx-3 p-4">
-            <img height={'300px'} width={'300px'} src="/public/shopping.webp" alt="" />
-            <div className="flex justify-center items-center mt-4 flex-col">
-              <h3 className="text-blue-600 font-bold text-lg">Author</h3>
-              <h4 className="text-lg">title</h4>
-              <h4>$ price</h4>
-              <button className='bg-green-600 mt-3 p-2 text-white'>APPROVED</button>
-            </div>
-          </div>
+            {
+              allBooks?.length>0 ?
+                allBooks?.map(book=>(
+                  <div key={book?._id} className="shadow rounded mx-3 p-4">
+                    <img height={'300px'} width={'300px'} src={book?.imageURL} alt="" />
+                    <div className="flex justify-center items-center mt-4 flex-col">
+                      <h3 className="text-blue-600 font-bold text-lg">{book?.author}</h3>
+                      <h4 className="text-lg">title</h4>
+                      <h4>rs {book?.discountPrice}</h4>
+                      <button className='bg-green-600 mt-3 p-2 text-white'>APPROVE</button>
+                    </div>
+                  </div>
+                ))
+              :
+              <p>Loading.....</p>
+            }
           </div>
         }
         {
