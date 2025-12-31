@@ -51,7 +51,7 @@ const resetForm = ()=>{
 }
 
 const handleProfileUpdate = async ()=>{
-  const {username,password,bio} = userDetails
+  const {username,password,bio,id} = userDetails
   if(!username || !password || !confirmPassword){
     toast.info("please fill the form completely")
   }else{
